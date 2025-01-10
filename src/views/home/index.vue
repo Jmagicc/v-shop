@@ -22,7 +22,16 @@ const bannerList = ref<Recordable[]>([]);
 
 function getBannerList() {
   API_BANNER.bannerList({ type: 'indexBanner' }).then((res) => {
-    bannerList.value = res.data || [];
+    bannerList.value = res.data?.items?.map((item: any) => ({
+      id: item.id,
+      picUrl: item.pic? `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/t4oj5dma4cxyhgo/${item.id}/${item.pic}` : '',
+      title: item.title,
+      linkUrl: item.linkUrl || '',
+    })) || [];
+    
+    console.log('Mapped Banner List:', bannerList.value);
+  }).catch(err => {
+    console.error('Banner Error:', err);
   });
 }
 
@@ -44,13 +53,62 @@ const listMeta = reactive({
   emptyImage: IMAGE_LIST_EMPTY,
 });
 
-function getGoodList() {
-  const params = {
-    page: pagination.pageCurrent,
-    pageSize: pagination.pageSize,
-  };
+const fieldNames = {
+  itemsField: 'items',
+  totalRowField: 'totalItems'
+};
 
-  return API_GOODS.goodsList(params);
+async function getGoodList() {
+  try {
+    const params = {
+      page: pagination.pageCurrent,
+      pageSize: pagination.pageSize,
+    };
+
+    const res = await API_GOODS.goodsList(params);
+    console.log('Home goods API response:', res);
+
+    // 检查响应数据
+    if (!res || !res.data) {
+      return {
+        success: false,
+        data: {
+          items: [],
+          totalItems: 0
+        }
+      };
+    }
+
+    // 转换数据格式以适配展示逻辑
+    const formattedData = res.data.items.map(item => ({
+      id: item.id,
+      product_name: item.product_name,
+      main: item.main ? `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/0w865dit1pss844/sztopnd9n4qkygn/${item.main}` : '',
+      actual_price: Number(item.actual_price),
+      wholesale_price: Number(item.wholesale_price),
+      description: item.description,
+      stock_quantity: item.stock_quantity,
+      recommendStatus: item.recommendStatus,
+      origin_price: Number(item.origin_price)
+    }));
+
+    return {
+      success: true,
+      data: {
+        items: formattedData,
+        totalItems: res.data.totalItems || formattedData.length
+      }
+    };
+  } catch (error) {
+    console.error('Failed to fetch goods:', error);
+    return {
+      success: false,
+      data: {
+        items: [],
+        totalItems: 0
+      }
+    };
+  }
 }
 
 function onGoodClicked(id: number) {
@@ -80,27 +138,28 @@ function onGoodClicked(id: number) {
         mode="infinite"
         :api="getGoodList"
         :pagination="pagination"
+        :fieldNames="fieldNames"
         :meta="listMeta"
       >
         <div class="list">
           <div v-for="item in list" :key="item.id" class="list-col">
             <div class="list-item" @click="onGoodClicked(item.id)">
               <div v-if="item.recommendStatus" class="list-item-badge">推荐</div>
-              <van-image class="list-item-photo" :src="item.pic" :alt="item.name" />
+              <van-image class="list-item-photo" :src="item.main" :alt="item.product_name" />
               <div class="list-item-info">
-                <div class="list-item-title">{{ item.name }}</div>
+                <div class="list-item-title">{{ item.product_name }}</div>
                 <div class="list-item-price">
                   <div class="price">
                     <div class="price-current">
                       <span class="price-current-symbol">¥</span>
-                      <span class="price-current-integer">{{ item.minPrice }}</span>
+                      <span class="price-current-integer">{{ item.actual_price }}</span>
                     </div>
-                    <div v-if="item.originalPrice > 0" class="price-origin">
+                    <div v-if="item.origin_price > 0" class="price-origin">
                       <span class="price-origin-symbol">¥</span>
-                      <span class="price-origin-integer">{{ item.originalPrice }}</span>
+                      <span class="price-origin-integer">{{ item.origin_price}}</span>
                     </div>
                   </div>
-                  <van-button type="primary" plain class="buy-btn">购买</van-button>
+                  <!-- <van-button type="primary" plain class="buy-btn">购买</van-button> -->
                 </div>
               </div>
             </div>

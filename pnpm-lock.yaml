@@ -24,7 +24,7 @@ importers:
         specifier: ^1.1.1
         version: 1.2.1
       dayjs:
-        specifier: ^1.11.5
+        specifier: ^1.11.9
         version: 1.11.9
       good-storage:
         specifier: ^1.1.1

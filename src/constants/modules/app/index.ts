@@ -105,18 +105,18 @@ export const tabBar = {
       icon: 'apps-o',
       activeIcon: 'apps-o',
     },
-    {
-      text: '购物车',
-      pagePath: '/cart',
-      icon: 'shopping-cart-o',
-      activeIcon: 'shopping-cart',
-    },
-    {
-      text: '个人中心',
-      pagePath: '/mine',
-      icon: 'contact',
-      activeIcon: 'contact',
-    },
+    // {
+    //   text: '购物车',
+    //   pagePath: '/cart',
+    //   icon: 'shopping-cart-o',
+    //   activeIcon: 'shopping-cart',
+    // },
+    // {
+    //   text: '个人中心',
+    //   pagePath: '/mine',
+    //   icon: 'contact',
+    //   activeIcon: 'contact',
+    // },
   ],
 };
 

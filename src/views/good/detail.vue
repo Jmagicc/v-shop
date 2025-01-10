@@ -42,9 +42,10 @@ const logistics = ref<Recordable>({});
 const content = ref('');
 const goodPrice = computed(() => {
   if (unref(hasSku)) {
-    return unref(sku).skuList[0].price;
+    // return unref(sku).skuList[0].price;
+    return unref(basicInfo).actual_price;
   } else {
-    return unref(basicInfo).minPrice;
+    return unref(basicInfo).actual_price;
   }
 });
 const goodMaxPrice = computed(() => {
@@ -65,10 +66,14 @@ const goodDeliveryTitle = computed(() => {
 
 function getGoodsDetail() {
   API_GOODS.goodsDetail({ id: route.query.id }).then((res) => {
-    picList.value = res.data.pics;
-    basicInfo.value = res.data.basicInfo;
-    logistics.value = res.data?.logistics ?? {};
-    content.value = res.data.content;
+    picList.value = res.data.items[0].images.map((image: string) => ({
+      id: image,
+      pic: `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/0w865dit1pss844/sztopnd9n4qkygn/${image}`
+    }));
+    
+    basicInfo.value = res.data.items[0];
+    // logistics.value = res.data?.logistics ?? {};
+    content.value = res.data.items[0].content;
 
     // 商品已下架
     if (unref(basicInfo).status === 1) {
@@ -236,60 +241,60 @@ function addCartHandle() {
             <span class="price-current-integer">{{ priceIntegerFormat(goodPrice, goodMaxPrice) }}</span>
             <!-- <span v-if="marketing.type" class="price-tag">{{ marketing.info.label }}</span> -->
           </div>
-          <div v-if="basicInfo.originalPrice > 0" class="price-origin">
+          <div v-if="basicInfo.origin_price > 0" class="price-origin">
             <span class="price-origin-label">价格</span>
             <span class="price-origin-symbol">¥</span>
-            <span class="price-origin-integer">{{ decimalFormat(basicInfo.originalPrice) }}</span>
+            <span class="price-origin-integer">{{ decimalFormat(basicInfo.origin_price) }}</span>
           </div>
         </div>
       </div>
       <div class="desc">
         <div class="desc-hd">
-          <div class="desc-title van-multi-ellipsis--l2">{{ basicInfo.name }}</div>
+          <!-- <div class="desc-title van-multi-ellipsis--l2">{{ basicInfo.name }}</div> -->
           <div v-if="basicInfo.characteristic" class="desc-brief">
             {{ basicInfo.characteristic }}
           </div>
         </div>
       </div>
     </div>
-    <div class="stock van-hairline--top">
+    <!-- <div class="stock van-hairline--top">
       <div class="stock-item">
         {{ goodDeliveryTitle }}
       </div>
-      <!-- <div class="stock-item">购买：{{ basicInfo.numberSells }}</div> -->
+      <div class="stock-item">购买：{{ basicInfo.numberSells }}</div>
       <div class="stock-item">剩余 {{ basicInfo.stores }}</div>
     </div>
-    <Coupons title="领券" />
-    <van-cell>
+    <Coupons title="领券" /> -->
+    <!-- <van-cell>
       <template #title>
         <div class="cell-bar">
           <div class="cell-bar-title">服务</div>
           <div class="cell-bar-text">{{ afterSaleTitle }}</div>
         </div>
       </template>
-    </van-cell>
-    <van-cell v-if="hasSku" :border="false" is-link @click="onSkuShow">
+    </van-cell> -->
+    <!-- <van-cell v-if="hasSku" :border="false" is-link @click="onSkuShow">
       <template #title>
         <div class="cell-bar">
           <div class="cell-bar-title">{{ initialSku.selectedPropList.length ? '已选' : '选择' }}</div>
           <div class="cell-bar-text">{{ goodSelectedSkuTitle }}</div>
         </div>
       </template>
-    </van-cell>
-    <Reputations v-if="basicInfo.id" class="mt10" :goods-id="basicInfo.id" />
+    </van-cell> -->
+    <!-- <Reputations v-if="basicInfo.id" class="mt10" :goods-id="basicInfo.id" /> -->
     <Plate title="商品详情" class="mt10" />
     <div class="goods-content" v-html="content"></div>
     <div class="action-bar-perch"></div>
     <!-- 商品导航栏 -->
     <van-action-bar>
       <van-action-bar-icon icon="thumb-circle-o" text="首页" to="/home" replace />
-      <van-action-bar-icon icon="chat-o" text="客服" @click="onConcatService" />
-      <van-action-bar-icon icon="cart-o" text="购物车" to="/cart" :badge="cartCount" replace />
-      <van-action-bar-button type="warning" text="加入购物车" @click="onSkuShow('addCart')" />
-      <van-action-bar-button type="danger" text="立即购买" @click="onSkuShow" />
+      <!-- <van-action-bar-icon icon="chat-o" text="客服" @click="onConcatService" /> -->
+      <!-- <van-action-bar-icon icon="cart-o" text="购物车" to="/cart" :badge="cartCount" replace /> -->
+      <!-- <van-action-bar-button type="warning" text="加入购物车" @click="onSkuShow('addCart')" /> -->
+      <!-- <van-action-bar-button type="danger" text="立即购买" @click="onSkuShow" /> -->
     </van-action-bar>
     <!-- SKU 弹窗 -->
-    <Sku v-model:show="skuShow" :sku="sku" :initial-sku="initialSku" @confirm="onSkuConfirm" />
+    <!-- <Sku v-model:show="skuShow" :sku="sku" :initial-sku="initialSku" @confirm="onSkuConfirm" /> -->
   </div>
 </template>
 

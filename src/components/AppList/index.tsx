@@ -120,7 +120,8 @@ export default defineComponent({
     }
 
     return () => {
-      if (!props.hasData && props.error) {
+      // if (!props.hasData && props.error) {
+      if (props.error) {
         return renderError();
       }
 

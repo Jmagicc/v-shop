@@ -3,7 +3,7 @@ import type { PropType } from 'vue';
 import { defineComponent, computed } from 'vue';
 import AppList from '../AppList';
 import { useListOptions, UseListPagination, useList } from '@/hooks/shared/useList';
-
+ 
 export default defineComponent({
   name: 'ProList',
   components: { AppList },
@@ -35,9 +35,11 @@ export default defineComponent({
   setup(props, { attrs, emit, expose }) {
     const list = computed({
       get() {
+        console.log('list getter:', props.dataSource);
         return props.dataSource;
       },
       set(newValue) {
+        console.log('list setter:', newValue);
         emit('update:dataSource', newValue);
       },
     });
@@ -49,6 +51,10 @@ export default defineComponent({
       list,
       props.pagination,
     );
+
+    console.log('hasData:', hasData.value);
+    console.log('error:', error.value);
+    console.log('loading:', loading.value);
 
     expose({ refresh, onError, loadMore, loadData });
 

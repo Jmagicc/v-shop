@@ -21,7 +21,7 @@
     "@vueuse/core": "^7.7.1",
     "axios": "^0.21.4",
     "compressorjs": "^1.1.1",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.9",
     "good-storage": "^1.1.1",
     "gsap": "^3.11.5",
     "number-precision": "^1.5.2",

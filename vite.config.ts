@@ -57,11 +57,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       host: true,
       port: Number(env.VITE_PORT),
       proxy: {
-        '/dev-api': {
-          target: `https://${env.VITE_APP_API_HOST}/${env.VITE_APP_SUB_DOMAIN}`, // https://api.it120.cc/xiaochengxu
+        '/api': {
+          target: env.VITE_APP_API_BASE_URL,
           changeOrigin: true,
           secure: false,
-          rewrite: (path) => path.replace(/^\/dev-api/, ''),
         },
       },
     },
@@ -101,5 +100,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         },
       },
     },
+    assetsInclude: ['**/*.svg'],
   };
 });

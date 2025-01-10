@@ -54,43 +54,43 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
 /**
  * 响应拦截器
  */
-instance.interceptors.response.use(
-  (response: AxiosResponse<any>) => {
-    const result: ServiceResult = response.data;
-    const { code } = result;
+// instance.interceptors.response.use(
+//   (response: AxiosResponse<any>) => {
+//     const result: ServiceResult = response.data;
+//     const { code } = result;
 
-    // 不进行任何处理，直接返回原生响应
-    if (requestOptions.isReturnNativeResponse) {
-      return response;
-    }
+//     // 不进行任何处理，直接返回原生响应
+//     if (requestOptions.isReturnNativeResponse) {
+//       return response;
+//     }
 
-    // 不进行任何处理，直接返回数据
-    if (!requestOptions.isTransformResponse) {
-      return result;
-    }
+//     // 不进行任何处理，直接返回数据
+//     if (!requestOptions.isTransformResponse) {
+//       return result;
+//     }
 
-    if (Number(code) === ServiceResultCodeEnum.SUCCESS) {
-      return result;
-    } else if (Number(code) === ServiceResultCodeEnum.NO_DATA) {
-      result.data = null;
-      return result;
-    } else {
-      serviceErrorHandle(result);
-      return Promise.reject(result);
-    }
-  },
-  (error: AxiosError) => {
-    const result = error?.response?.data;
+//     if (Number(code) === ServiceResultCodeEnum.SUCCESS) {
+//       return result;
+//     } else if (Number(code) === ServiceResultCodeEnum.NO_DATA) {
+//       result.data = null;
+//       return result;
+//     } else {
+//       serviceErrorHandle(result);
+//       return Promise.reject(result);
+//     }
+//   },
+//   (error: AxiosError) => {
+//     const result = error?.response?.data;
 
-    if (result) {
-      serviceErrorHandle(result);
-    } else {
-      httpErrorHandle(error);
-    }
+//     if (result) {
+//       serviceErrorHandle(result);
+//     } else {
+//       httpErrorHandle(error);
+//     }
 
-    return Promise.reject(error);
-  },
-);
+//     return Promise.reject(error);
+//   },
+// );
 
 /**
  * 通用请求函数

@@ -126,9 +126,17 @@ export function goodsBrandList(data?: Recordable) {
  */
 export function goodsCategoryAll(data?: Recordable) {
   return request({
-    url: `/shop/goods/category/all`,
+    url: '/api/collections/wgfdfpq23gkn0b7/records',
     method: 'get',
-    params: data,
+    params: {
+      page: 1,
+      perPage: 999,
+      sort: '-created',
+      skipTotal: 1,
+      ...data,
+    },
+  }).then(res => {
+    return res;
   });
 }
 
@@ -158,10 +166,16 @@ export function goodsDel(data?: Recordable) {
  * 商品详情
  */
 export function goodsDetail(data?: Recordable) {
+  console.log(data.id,"这里");
   return request({
-    url: `/shop/goods/detail`,
+    url: '/api/collections/0w865dit1pss844/records',
     method: 'get',
-    params: data,
+    params: {
+      page: 1,
+      perPage: 999,
+      sort: '-created',
+      filter: `id='`+ data.id+`'`,
+    },
   });
 }
 
@@ -254,13 +268,79 @@ export function goodsLimitation(data?: Recordable) {
 }
 
 /**
- * 商品列表
+ * 定义商品接口的请求参数类型
  */
-export function goodsList(data?: Recordable) {
-  return request({
-    url: `/shop/goods/list/v2`,
-    method: 'post',
-    data,
+interface GoodsListParams {
+  categoryId?: string;
+  page?: number;
+  pageSize?: number;
+  sort?: string;
+  isShow?: boolean;
+}
+
+/**
+ * 定义商品数据类型
+ */
+interface GoodsItem {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  updated: string;
+  product_name: string;
+  description: string;
+  actual_price: string;
+  main: string;
+  wholesale_price: string;
+  stock_quantity: number;
+  images: string[];
+  is_show: boolean;
+  product_type: string;
+  product_tags: string[];
+}
+
+/**
+ * 定义响应数据类型
+ */
+interface GoodsListResponse {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  items: GoodsItem[];
+}
+
+/**
+ * 修改商品列表接口
+ */
+export function goodsList(params: GoodsListParams) {
+  const defaultParams = {
+    page: 1,
+    perPage: 999,
+    sort: '-created',
+    isShow: true,
+  };
+
+  const queryParams = {
+    ...defaultParams,
+    ...params,
+  };
+
+  // 构建 filter 条件
+  let filterCondition = `is_show=${queryParams.isShow}`;
+  if (queryParams.categoryId) {
+    filterCondition = `product_type.name='${queryParams.categoryId}'&&${filterCondition}`;
+  }
+
+  return request<GoodsListResponse>({
+    url: '/api/collections/0w865dit1pss844/records',
+    method: 'get',
+    params: {
+      page: queryParams.page,
+      perPage: 999,
+      sort: queryParams.sort,
+      filter: filterCondition,
+    },
   });
 }
 

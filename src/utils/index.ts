@@ -123,16 +123,14 @@ export function getEnv() {
  * 获取接口前缀
  */
 export function getAPI(code = 'api') {
-  const host: string = import.meta.env.PROD ? import.meta.env.VITE_APP_API_HOST : location.host;
-  const origin = `${location.protocol}//${host}`;
-  const basePath = import.meta.env.PROD ? `/${import.meta.env.VITE_APP_SUB_DOMAIN}` : '/dev-api';
-  const api = `${origin}${basePath}`; // 基础接口
+  const baseURL = import.meta.env.VITE_APP_API_BASE_URL || 'http://192.168.0.200:7070';
+  const api = baseURL; // 基础接口
 
   switch (code) {
     case 'host':
-      return host;
+      return new URL(baseURL).host;
     case 'origin':
-      return origin;
+      return baseURL;
     default:
       return api;
   }

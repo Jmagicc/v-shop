@@ -332,7 +332,7 @@ export function goodsList(params: GoodsListParams) {
   }
 
   return request<GoodsListResponse>({
-    url: '/api/collections/0w865dit1pss844/records',
+    url: '/api/collections/product/records',
     method: 'get',
     params: {
       page: queryParams.page,

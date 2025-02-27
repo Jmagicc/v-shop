@@ -166,9 +166,8 @@ export function goodsDel(data?: Recordable) {
  * 商品详情
  */
 export function goodsDetail(data?: Recordable) {
-  console.log(data.id,"这里");
   return request({
-    url: '/api/collections/0w865dit1pss844/records',
+    url: '/api/collections/product/records',
     method: 'get',
     params: {
       page: 1,

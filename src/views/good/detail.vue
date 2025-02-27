@@ -68,7 +68,7 @@ function getGoodsDetail() {
   API_GOODS.goodsDetail({ id: route.query.id }).then((res) => {
     picList.value = res.data.items[0].images.map((image: string) => ({
       id: image,
-      pic: `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/0w865dit1pss844/sztopnd9n4qkygn/${image}`
+      pic: `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/${res.data.items[0].collectionId}/${res.data.items[0].id}/${image}`
     }));
     
     basicInfo.value = res.data.items[0];

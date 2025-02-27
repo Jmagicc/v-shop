@@ -13,11 +13,11 @@ function onDarkToggle() {
 <template>
   <div class="app-window-bar">
     <!-- 暗黑主题 -->
-    <teleport to="body">
+    <!-- <teleport to="body">
       <div class="app-window-bar__theme" @click="onDarkToggle">
         <IconDark class="app-window-bar__theme-icon" />
       </div>
-    </teleport>
+    </teleport> -->
     <!-- 返回顶部 -->
     <van-back-top right="5vw" bottom="10vh" teleport="body" />
   </div>

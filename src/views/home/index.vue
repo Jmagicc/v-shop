@@ -24,7 +24,7 @@ function getBannerList() {
   API_BANNER.bannerList({ type: 'indexBanner' }).then((res) => {
     bannerList.value = res.data?.items?.map((item: any) => ({
       id: item.id,
-      picUrl: item.pic? `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/t4oj5dma4cxyhgo/${item.id}/${item.pic}` : '',
+      picUrl: item.pic? `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/${item.collectionId}/${item.id}/${item.pic}` : '',
       title: item.title,
       linkUrl: item.linkUrl || '',
     })) || [];
@@ -83,7 +83,7 @@ async function getGoodList() {
     const formattedData = res.data.items.map(item => ({
       id: item.id,
       product_name: item.product_name,
-      main: item.main ? `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/0w865dit1pss844/sztopnd9n4qkygn/${item.main}` : '',
+      main: item.main ? `${import.meta.env.VITE_APP_API_BASE_URL}/api/files/${item.collectionId}/${item.id}/${item.main}` : '',
       actual_price: Number(item.actual_price),
       wholesale_price: Number(item.wholesale_price),
       description: item.description,

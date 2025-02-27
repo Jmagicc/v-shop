@@ -5,7 +5,7 @@ import { request } from '@/utils/request';
  */
 export function bannerList(data?: Recordable) {
   return request({
-    url: `/api/collections/t4oj5dma4cxyhgo/records`,
+    url: `/api/collections/banner/records`,
     method: 'get',
     params: {
       page: 1,
